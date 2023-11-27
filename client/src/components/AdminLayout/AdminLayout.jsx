@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { IoMdMenu } from 'react-icons/io';
 import Sidebar from './components/Sidebar/Sidebar';
+import LanguageSelector from '../LanguageSelector/LanguageSelector';
 import './styles.css';
 
 function AdminLayout({ children, links = [] }) {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
   const [isSidebarActive, setisSidebarActive] = useState(!isMobile);
+  const { t } = useTranslation();
 
   const sidebarToggle = () => setisSidebarActive(!isSidebarActive);
 
@@ -28,7 +31,8 @@ function AdminLayout({ children, links = [] }) {
               style={{ width: '100%', height: '100%', color: '#fff' }}
             />
           </button>
-          <h2 className="header__title">Админ-панель</h2>
+          <h2 className="header__title">{t('content.header.title')}</h2>
+          <LanguageSelector />
         </header>
         <div className="content__wrapper">
           <main className="content__container">{children}</main>
@@ -52,7 +56,7 @@ function AdminLayout({ children, links = [] }) {
               className="sidebar__nav-link"
               onClick={isMobile ? sidebarToggle : null}
             >
-              {link.name}
+              {t(`links.${link.name}`)}
             </NavLink>
           );
         })}

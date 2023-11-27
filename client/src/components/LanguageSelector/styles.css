@@ -1,0 +1,19 @@
+.language-selector {
+  flex-shrink: 0;
+  display: flex;
+  margin-left: auto;
+  gap: 0.7rem;
+}
+
+.language-selector__btn {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 0.7rem;
+  gap: 5px;
+}
+
+.language-selector__img {
+  width: 1.5rem;
+  height: 1.5rem;
+}

@@ -1,5 +1,9 @@
+import { useTranslation } from 'react-i18next';
+
 const Rooms = () => {
-  return <div>Комнаты</div>;
+  const { t } = useTranslation();
+
+  return <h1>{t('content.rooms.title')}</h1>;
 };
 
 export default Rooms;

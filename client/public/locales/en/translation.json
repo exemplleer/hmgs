@@ -1,0 +1,23 @@
+{
+  "links": {
+    "Dashboard": "Dashboard",
+    "Rooms": "Rooms"
+  },
+  "sidebar": {
+    "close": "Close"
+  },
+  "content": {
+    "header": {
+      "title": "Admin-panel"
+    },
+    "dashboard": {
+      "title": "Welcome to the admin panel. Here you can manage your application data."
+    },
+    "rooms": {
+      "title": "Rooms"
+    }
+  },
+  "error": {
+    "notFound": "Page not found!"
+  }
+}
