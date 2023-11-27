@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { NavLink } from 'react-router-dom';
 import { IoMdMenu } from 'react-icons/io';
-import Sidebar from '../UI/Sidebar/Sidebar';
+import Sidebar from './components/Sidebar/Sidebar';
 import './styles.css';
 
 function AdminLayout({ children, links = [] }) {
@@ -17,7 +18,6 @@ function AdminLayout({ children, links = [] }) {
   return (
     <div className="page-container">
       <div
-        id="content"
         className={`content${
           isMobile ? ' content--mobile' : ' content--shift'
         }`}
@@ -28,7 +28,7 @@ function AdminLayout({ children, links = [] }) {
               style={{ width: '100%', height: '100%', color: '#fff' }}
             />
           </button>
-          <h1 className="header__title">Админ-панель</h1>
+          <h2 className="header__title">Админ-панель</h2>
         </header>
         <div className="content__wrapper">
           <main className="content__container">{children}</main>
@@ -39,8 +39,24 @@ function AdminLayout({ children, links = [] }) {
         isMobile={isMobile}
         isActive={isSidebarActive}
         hide={sidebarToggle}
-        links={links}
-      />
+      >
+        {links.map((link) => {
+          if (!link.name) {
+            return;
+          }
+
+          return (
+            <NavLink
+              to={link.path}
+              key={link.path}
+              className="sidebar__nav-link"
+              onClick={isMobile ? sidebarToggle : null}
+            >
+              {link.name}
+            </NavLink>
+          );
+        })}
+      </Sidebar>
     </div>
   );
 }
