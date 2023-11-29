@@ -1,5 +1,5 @@
 import express from 'express';
-import db from './db.js';
+import db from './config/db.js';
 
 const PORT = process.env.PORT || 5050;
 const pid = process.pid;
