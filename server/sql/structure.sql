@@ -50,8 +50,8 @@ CREATE TABLE room_status (
   id            serial,
   room_id       integer NOT NULL,
   begin_date    timestamp NOT NULL,
-  end_date      timestamp NOT NULL
-  is_avalible   boolean NOT NULL,
+  end_date      timestamp NOT NULL,
+  is_avalible   boolean NOT NULL
 );
 
 ALTER TABLE room_status ADD CONSTRAINT pk_room_status PRIMARY KEY (id);
@@ -65,6 +65,16 @@ CREATE TABLE amenity (
 );
 
 ALTER TABLE amenity ADD CONSTRAINT pk_amenity PRIMARY KEY (id);
+
+CREATE TABLE addition (
+  id            serial,
+  title         varchar(255) NOT NULL,
+  price         numeric(18, 2) NOT NULL,
+  is_avalible   boolean NOT NULL,
+  descr         text
+);
+
+ALTER TABLE addition ADD CONSTRAINT pk_addition PRIMARY KEY (id);
 
 CREATE TABLE room_amenity (
   id          serial,
@@ -92,10 +102,19 @@ ALTER TABLE booking_room ADD CONSTRAINT fk_booking_booking_room FOREIGN KEY (boo
 ALTER TABLE booking_room ADD CONSTRAINT fk_room_booking_room FOREIGN KEY (room_id) REFERENCES room (id);
 
 CREATE TABLE booking_amenity (
-  booking_room_id integer NOT NULL,
-  room_amenity_id integer NOT NULL
+  booking_room_id   integer NOT NULL,
+  room_amenity_id   integer NOT NULL
 );
 
-ALTER TABLE booking_amenity ADD CONSTRAINT fk_booking_room FOREIGN KEY (booking_room_id) REFERENCES booking_room (id);
-ALTER TABLE booking_amenity ADD CONSTRAINT fk_booking_room_amenity FOREIGN KEY (room_amenity_id) REFERENCES room_amenity (id);
+ALTER TABLE booking_amenity ADD CONSTRAINT fk_booking_room_booking_amenity FOREIGN KEY (booking_room_id) REFERENCES booking_room (id);
+ALTER TABLE booking_amenity ADD CONSTRAINT fk_room_amenity_booking_amenity FOREIGN KEY (room_amenity_id) REFERENCES room_amenity (id);
 ALTER TABLE booking_amenity ADD CONSTRAINT pk_booking_amenity PRIMARY KEY (booking_room_id, room_amenity_id);
+
+CREATE TABLE booking_addition (
+  booking_id    integer NOT NULL,
+  addition_id   integer NOT NULL
+);
+
+ALTER TABLE booking_addition ADD CONSTRAINT fk_booking_booking_addition FOREIGN KEY (booking_id) REFERENCES booking (id);
+ALTER TABLE booking_addition ADD CONSTRAINT fk_addition_booking_addition FOREIGN KEY (addition_id) REFERENCES addition (id);
+ALTER TABLE booking_addition ADD CONSTRAINT pk_booking_addition PRIMARY KEY (booking_id, addition_id);
