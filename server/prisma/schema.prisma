@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model addition {
+  id               Int                @id(map: "pk_addition") @default(autoincrement())
+  title            String             @db.VarChar(255)
+  price            Decimal            @db.Decimal(18, 2)
+  is_avalible      Boolean
+  descr            String?
+  booking_addition booking_addition[]
+}
+
+model amenity {
+  id           Int            @id(map: "pk_amenity") @default(autoincrement())
+  title        String         @db.VarChar(255)
+  is_avalible  Boolean
+  descr        String?
+  room_amenity room_amenity[]
+}
+
+model booking {
+  id               Int                @id(map: "pk_booking") @default(autoincrement())
+  person_id        Int
+  total_price      Decimal            @default(0) @db.Decimal(18, 2)
+  status_value     String             @db.VarChar(64)
+  person           person             @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_person_booking")
+  booking_addition booking_addition[]
+  booking_room     booking_room[]
+  payment          payment[]
+}
+
+model booking_addition {
+  booking_id  Int
+  addition_id Int
+  addition    addition @relation(fields: [addition_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_addition_booking_addition")
+  booking     booking  @relation(fields: [booking_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_booking_booking_addition")
+
+  @@id([booking_id, addition_id], map: "pk_booking_addition")
+}
+
+model booking_amenity {
+  booking_room_id Int
+  room_amenity_id Int
+  booking_room    booking_room @relation(fields: [booking_room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_booking_room_booking_amenity")
+  room_amenity    room_amenity @relation(fields: [room_amenity_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_room_amenity_booking_amenity")
+
+  @@id([booking_room_id, room_amenity_id], map: "pk_booking_amenity")
+}
+
+model booking_room {
+  id              Int               @id(map: "pk_booking_room") @default(autoincrement())
+  booking_id      Int
+  room_id         Int
+  people_num      Int
+  begin_date      DateTime          @db.Timestamp(6)
+  end_date        DateTime          @db.Timestamp(6)
+  status_value    String            @db.VarChar(64)
+  booking_amenity booking_amenity[]
+  booking         booking           @relation(fields: [booking_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_booking_booking_room")
+  room            room              @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_room_booking_room")
+}
+
+model payment {
+  id           Int      @id(map: "pk_payment") @default(autoincrement())
+  booking_id   Int
+  pay_date     DateTime @db.Timestamp(6)
+  pay_method   String   @db.VarChar(64)
+  pay_amount   Decimal  @db.Decimal(18, 2)
+  status_value String   @db.VarChar(64)
+  booking      booking  @relation(fields: [booking_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_booking_payment")
+}
+
+model person {
+  id         Int       @id(map: "pk_person") @default(autoincrement())
+  first_name String    @db.VarChar(255)
+  last_name  String    @db.VarChar(255)
+  role_value String    @default("guest") @db.VarChar(64)
+  phone      String    @unique(map: "ak_person_phone") @db.VarChar(20)
+  email      String?   @db.VarChar(255)
+  booking    booking[]
+}
+
+model room {
+  id           Int            @id(map: "pk_room") @default(autoincrement())
+  title        String         @db.VarChar(255)
+  price        Decimal        @db.Decimal(18, 2)
+  capacity     Int
+  numbr        Int            @unique(map: "ak_room_numbr")
+  descr        String?
+  booking_room booking_room[]
+  room_amenity room_amenity[]
+  room_status  room_status[]
+}
+
+model room_amenity {
+  id              Int               @id(map: "pk_room_amenity") @default(autoincrement())
+  room_id         Int
+  amenity_id      Int
+  price           Decimal           @db.Decimal(18, 2)
+  booking_amenity booking_amenity[]
+  amenity         amenity           @relation(fields: [amenity_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_amenity_room_amenity")
+  room            room              @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_room_room_amenity")
+}
+
+model room_status {
+  id          Int      @id(map: "pk_room_status") @default(autoincrement())
+  room_id     Int
+  begin_date  DateTime @db.Timestamp(6)
+  end_date    DateTime @db.Timestamp(6)
+  is_avalible Boolean
+  room        room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_room_room_status")
+}
