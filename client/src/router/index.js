@@ -1,5 +1,5 @@
 import Dashboard from '../pages/Dashboard';
-import Rooms from '../pages/Rooms';
+import Rooms from '../pages/Rooms/Rooms';
 import NotFound from '../pages/NotFound';
 
 export const privateRoutes = [
