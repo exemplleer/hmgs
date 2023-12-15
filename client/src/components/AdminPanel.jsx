@@ -1,21 +1,29 @@
-import { Routes, Route } from 'react-router-dom';
-import { privateRoutes } from '../router';
-import AdminLayout from './AdminLayout/AdminLayout';
+import { Layout, theme } from 'antd';
+import AppHeader from './AppHeader';
+import AdminContent from './AdminContent';
+const { Content } = Layout;
 
-const AdminPanel = () => {
+const AdminLayout = () => {
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
   return (
-    <AdminLayout links={privateRoutes}>
-      <Routes>
-        {privateRoutes.map((route) => (
-          <Route
-            path={route.path}
-            element={<route.element />}
-            key={route.path}
-          />
-        ))}
-      </Routes>
-    </AdminLayout>
+    <Layout style={{ minHeight: '100vh' }}>
+      <AppHeader />
+      <Content style={{ padding: '16px 48px' }}>
+        <div
+          style={{
+            minHeight: 600,
+            padding: 24,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+          }}
+        >
+          <AdminContent />
+        </div>
+      </Content>
+    </Layout>
   );
 };
-
-export default AdminPanel;
+export default AdminLayout;

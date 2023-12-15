@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 import AdminPanel from './components/AdminPanel';
-import './styles/reset.css';
+import 'antd/dist/reset.css';
 import './styles/index.css';
 
 function App() {
