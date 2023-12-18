@@ -1,34 +1,49 @@
+import RoomDto from '../dtos/room.dto.js';
 import roomRepository from '../repositories/room.repository.js';
 
 class RoomService {
   async createRoom(dto) {
-    const newRoom = await roomRepository.createRoom(dto);
-    return newRoom;
+    const entity = dto.toEntity();
+    return await roomRepository.createRoom(entity);
   }
 
   async getAllRooms() {
-    const rooms = await roomRepository.getAllRooms();
-    return rooms;
+    return (await roomRepository.getAllRooms())
+      .map((room) => new RoomDto(room))
+      .reverse();
   }
 
-  async getOneRoom(id) {
-    const room = await roomRepository.getRoomById(Number(id));
-    return room;
+  async getOneRoomById(id) {
+    return await roomRepository.getRoomById(Number(id));
   }
 
-  async updateRoom(id, dto) {
-    const updatedRoom = await roomRepository.updateRoom(Number(id), dto);
-    return updatedRoom;
+  async getOneRoomByNumber(number) {
+    const roomEntity = await roomRepository.getRoomByNumbr(Number(number));
+    const roomStatuses = await roomRepository.getAllRoomStatuses(roomEntity.id);
+    const roomDto = new RoomDto(roomEntity);
+    return { ...roomDto, statuses: roomStatuses };
   }
 
-  async removeRoom(id) {
-    const removeRoom = await roomRepository.removeRoom(Number(id));
-    return removeRoom;
+  async updateRoomByNumber(number, dto) {
+    return await roomRepository.updateRoomByNumbr(
+      Number(number),
+      dto.toEntity(),
+    );
   }
 
-  async setRoomStatus(id, startDate, endDate) {}
-  
-  async getRoomStatus(id, date) {}
+  async removeRoomByNumber(number) {
+    return await roomRepository.removeRoomByNumbr(Number(number));
+  }
+
+  async setRoomStatus(id, startDate, endDate, isAvalible) {
+    const roomStatus = await roomRepository.setRoomStatus(
+      Number(id),
+      new Date(startDate),
+      new Date(endDate),
+      isAvalible ?? false,
+    );
+    return roomStatus;
+  }
 }
 
 export default new RoomService();
