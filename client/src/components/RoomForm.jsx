@@ -97,7 +97,8 @@ const RoomForm = ({
         rules={[
           {
             type: 'number',
-            message: 'Должно быть заполнено числовым значением',
+            min: 0,
+            message: 'Должно быть заполнено числовым значением, не ниже 0',
           },
           { required: true, message: requiredTextMessage },
         ]}

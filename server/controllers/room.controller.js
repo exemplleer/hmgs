@@ -8,8 +8,7 @@ class RoomController {
       const newRoom = await roomService.createRoom(roomDto);
       res.status(201).json({ result: newRoom });
     } catch (error) {
-      res.status(500);
-      console.error(error);
+      res.status(500).json({ msg: error.message });
     }
   }
 
