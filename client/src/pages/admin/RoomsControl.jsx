@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROOMS_ROUTE } from '../../utils/consts';
 import RoomService from '../../api/RoomService';
 import RoomsTable from '../../components/RoomsTable';
+import { errorMessage } from '../../utils/messages';
 
 const RoomsControl = () => {
   const [rooms, setRooms] = useState([]);
@@ -16,7 +17,7 @@ const RoomsControl = () => {
       const response = await RoomService.getAllRooms();
       setRooms(response.result);
     } catch (error) {
-      console.error(error);
+      errorMessage(error, 'Ошибка при получении данных')
     } finally {
       setIsLoading(false);
     }
@@ -43,7 +44,10 @@ const RoomsControl = () => {
           Добавить новый номер
         </Button>
       </Space>
-      <RoomsTable data={rooms} isLoading={isLoading}></RoomsTable>
+      <RoomsTable
+        data={rooms.map((room) => ({ ...room, key: room.number }))}
+        isLoading={isLoading}
+      ></RoomsTable>
     </Space>
   );
 };

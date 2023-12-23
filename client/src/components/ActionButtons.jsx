@@ -4,7 +4,12 @@ import { EditTwoTone, InfoCircleTwoTone } from '@ant-design/icons';
 import { ROOMS_ROUTE } from '../utils/consts';
 
 const ActionButtons = ({ record }) => (
-  <Flex size="middle" justify='center' gap='0.6rem' style={{ fontSize: '1rem' }}>
+  <Flex
+    size="middle"
+    justify="center"
+    gap="0.6rem"
+    style={{ fontSize: '1rem' }}
+  >
     <Link to={`${ROOMS_ROUTE}/${record.number}`}>
       <Tooltip placement="top" title="Больше информации">
         <InfoCircleTwoTone />

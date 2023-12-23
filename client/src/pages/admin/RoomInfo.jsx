@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Col, Row, Space, Table, Card } from 'antd';
 import RoomService from '../../api/RoomService';
 import BackButton from '../../components/BackButton';
+import { errorMessage } from '../../utils/messages';
 
 const RoomInfo = () => {
   const [room, setRoom] = useState({});
@@ -12,9 +13,15 @@ const RoomInfo = () => {
   const fetchRoom = async (number) => {
     try {
       const response = await RoomService.getOneRoom(number);
-      setRoom(response.result);
+      const room = response.result;
+      const statuses = room.statuses.map((status, index) => ({
+        ...status,
+        key: index,
+      }));
+      room.statuses = statuses;
+      setRoom(room);
     } catch (error) {
-      console.error(error);
+      errorMessage(error, 'Ошибка при получении данных');
     } finally {
       setIsLoading(false);
     }
@@ -44,17 +51,19 @@ const RoomInfo = () => {
               <strong>Цена: </strong> <span>{room.price} руб.</span>
             </p>
             <p>
-              <strong>Вместимость: </strong> <span>{room.price} чел.</span>
+              <strong>Вместимость: </strong> <span>{room.capacity} чел.</span>
             </p>
-            <p>
-              <strong>Описание: </strong> <span>{room.description}</span>
-            </p>
+            <div>
+              <strong>Описание: </strong>{' '}
+              <p style={{ whiteSpace: 'pre-line' }}>{room.description}</p>
+            </div>
           </Card>
         </Col>
         <Col>
           <Table
             size="small"
             bordered
+            loading={isLoading}
             columns={[
               {
                 title: 'Статус',

@@ -1,23 +1,26 @@
 import { Form, InputNumber, Input, Space, Button } from 'antd';
+import { errorMessage, successMessage } from '../utils/messages';
 const { TextArea } = Input;
 
 const RoomForm = ({
   form,
   isLoading,
   submitHandler,
-  failHandler,
+  errorHandler,
   customButtons,
 }) => {
-  const defaultErrorHandler = (error) => {
-    console.log(error);
-  };
-
   const requiredTextMessage = 'Это поле должно быть заполнено';
+
+  const numberLengthLimitMessage = (from, to) =>
+    `Число должно быть в пределах от ${from} до ${to}`;
+
+  const stringLengthLimitMessage = (from, to) =>
+    `Поле должно содержать от ${from} до ${to} символов`;
 
   return (
     <Form
-      onFinish={submitHandler}
-      onFinishFailed={failHandler ?? defaultErrorHandler}
+      onFinish={submitHandler ?? (() => successMessage())}
+      onFinishFailed={errorHandler ?? ((err) => errorMessage(err))}
       style={{
         maxWidth: 480,
       }}
@@ -36,9 +39,9 @@ const RoomForm = ({
         rules={[
           {
             type: 'number',
-            min: 1,
+            min: 0,
             max: 2147483647,
-            message: 'Число должно быть в пределах от 1 до 2147483647',
+            message: numberLengthLimitMessage(0, 2147483647),
           },
           { required: true, message: requiredTextMessage },
         ]}
@@ -59,7 +62,7 @@ const RoomForm = ({
           {
             min: 3,
             max: 255,
-            message: 'Поле должно содержать от 3 до 255 символов',
+            message: stringLengthLimitMessage(3, 255),
           },
           { required: true, message: requiredTextMessage },
         ]}
@@ -77,7 +80,7 @@ const RoomForm = ({
             type: 'number',
             min: 1,
             max: 100,
-            message: 'Число должно быть в пределах от 1 до 100',
+            message: numberLengthLimitMessage(1, 100),
           },
           { required: true, message: requiredTextMessage },
         ]}
@@ -98,12 +101,14 @@ const RoomForm = ({
           {
             type: 'number',
             min: 0,
-            message: 'Должно быть заполнено числовым значением, не ниже 0',
+            max: 2147483647,
+            message: numberLengthLimitMessage(0, 2147483647),
           },
           { required: true, message: requiredTextMessage },
         ]}
       >
         <InputNumber
+          type="float"
           style={{ width: '100%' }}
           controls={false}
           placeholder="1000"
@@ -132,7 +137,6 @@ const RoomForm = ({
           <Button type="primary" htmlType="submit">
             Сохранить
           </Button>
-          <Button htmlType="reset">Сбросить</Button>
           {customButtons}
         </Space>
       </Form.Item>

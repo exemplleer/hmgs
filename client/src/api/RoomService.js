@@ -4,7 +4,12 @@ const api = `${import.meta.env.VITE_API_URL}/api`;
 
 export default class RoomService {
   static async getAllRooms() {
-    return await axios.get(`${api}/rooms`).then((response) => response.data);
+    console.time('GET ALL ROOMS DURATION');
+    const data = await axios
+      .get(`${api}/rooms`)
+      .then((response) => response.data);
+    console.timeEnd('GET ALL ROOMS DURATION');
+    return data;
   }
 
   static async createRoom(data) {
@@ -14,9 +19,12 @@ export default class RoomService {
   }
 
   static async getOneRoom(number) {
-    return await axios
+    console.time('GET ONE ROOM DURATION');
+    const data = await axios
       .get(`${api}/rooms/${number}`)
       .then((response) => response.data);
+    console.timeEnd('GET ONE ROOM DURATION');
+    return data;
   }
 
   static async getAllRoomStatuses(number) {
