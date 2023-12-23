@@ -35,7 +35,7 @@ class RoomController {
 
   async updateRoom(req, res) {
     try {
-      const number = req.params.number;
+      const number = req.params.number || req.body.number;
       const data = req.body;
       const roomDto = new RoomDto(data);
       const updatedRoom = await roomService.updateRoomByNumber(number, roomDto);

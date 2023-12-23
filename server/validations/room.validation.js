@@ -9,20 +9,22 @@ export default [
     .withMessage('Поле должно содержать от 3 до 255 символов'),
   body('number')
     .toInt()
-    .isLength({ min: 0, max: 2147483647 })
+    .isInt({ min: 0, max: 2147483647 })
     .withMessage('Поле должно быть числом в пределах от 0 до 2147483647')
-    .custom(async (value) => {
-      const room = await roomRepository.getRoomByNumbr(value);
-      if (room) throw new Error('Комната с таким номером уже существует');
+    .custom(async (value, { req }) => {
+      if (req.method === 'POST') {
+        const room = await roomRepository.getRoomByNumbr(value);
+        if (room) throw new Error('Комната с таким номером уже существует');
+      }
       return true;
     }),
   body('capacity')
     .toInt()
-    .isLength({ min: 1, max: 100 })
+    .isInt({ min: 1, max: 100 })
     .withMessage('Поле должно быть числом в пределах от 1 до 100'),
   body('price')
-    .toInt()
-    .isLength({ min: 0, max: 2147483647 })
+    .toFloat()
+    .isFloat({ min: 0, max: 2147483647 })
     .withMessage('Поле должно быть числом в пределах от 0 до 2147483647'),
   body('description')
     .trim()

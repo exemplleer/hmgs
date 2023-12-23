@@ -1,6 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: ['query', 'info', 'warn'],
+});
+
+prisma.$on('query', (e) => {
+  console.log('Duration query: ' + e.duration + 'ms');
+});
 
 class RoomRepository {
   async createRoom(fields) {
@@ -10,7 +16,12 @@ class RoomRepository {
   }
 
   async getAllRooms() {
-    return await prisma.room.findMany();
+    const rooms = await prisma.room.findMany({
+      orderBy: {
+        numbr: 'asc',
+      },
+    });
+    return rooms;
   }
 
   async getRoomById(id) {
@@ -26,9 +37,10 @@ class RoomRepository {
   }
 
   async updateRoomByNumbr(numbr, fields) {
-    return await prisma.room.update({
+    return await prisma.room.upsert({
       where: { numbr },
-      data: fields,
+      update: fields,
+      create: fields,
     });
   }
 

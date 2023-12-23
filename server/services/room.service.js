@@ -8,9 +8,9 @@ class RoomService {
   }
 
   async getAllRooms() {
-    return (await roomRepository.getAllRooms())
-      .map((room) => new RoomDto(room))
-      .reverse();
+    return (await roomRepository.getAllRooms()).map(
+      (room) => new RoomDto(room),
+    );
   }
 
   async getOneRoomById(id) {
