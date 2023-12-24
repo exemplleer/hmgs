@@ -9,17 +9,17 @@ datasource db {
 
 model addition {
   id               Int                @id(map: "pk_addition") @default(autoincrement())
-  title            String             @db.VarChar(255)
+  title            String             @db.VarChar(256)
   price            Decimal            @db.Decimal(18, 2)
-  is_avalible      Boolean
+  is_available     Boolean
   descr            String?
   booking_addition booking_addition[]
 }
 
 model amenity {
   id           Int            @id(map: "pk_amenity") @default(autoincrement())
-  title        String         @db.VarChar(255)
-  is_avalible  Boolean
+  title        String         @db.VarChar(256)
+  is_available Boolean
   descr        String?
   room_amenity room_amenity[]
 }
@@ -27,7 +27,7 @@ model amenity {
 model booking {
   id               Int                @id(map: "pk_booking") @default(autoincrement())
   person_id        Int
-  total_price      Decimal            @default(0) @db.Decimal(18, 2)
+  total_price      Decimal            @db.Decimal(18, 2)
   status_value     String             @db.VarChar(64)
   person           person             @relation(fields: [person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_person_booking")
   booking_addition booking_addition[]
@@ -57,7 +57,7 @@ model booking_room {
   id              Int               @id(map: "pk_booking_room") @default(autoincrement())
   booking_id      Int
   room_id         Int
-  people_num      Int
+  people_count    Int
   begin_date      DateTime          @db.Timestamp(6)
   end_date        DateTime          @db.Timestamp(6)
   status_value    String            @db.VarChar(64)
@@ -78,20 +78,22 @@ model payment {
 
 model person {
   id         Int       @id(map: "pk_person") @default(autoincrement())
-  first_name String    @db.VarChar(255)
-  last_name  String    @db.VarChar(255)
-  role_value String    @default("guest") @db.VarChar(64)
-  phone      String    @unique(map: "ak_person_phone") @db.VarChar(20)
-  email      String?   @db.VarChar(255)
+  phone      String    @unique(map: "ak_person_phone") @db.VarChar(16)
+  email      String?   @db.VarChar(256)
+  first_name String    @db.VarChar(256)
+  last_name  String    @db.VarChar(256)
+  role_value String    @db.VarChar(64)
   booking    booking[]
 }
 
 model room {
   id           Int            @id(map: "pk_room") @default(autoincrement())
-  title        String         @db.VarChar(255)
+  num          Int            @unique(map: "ak_room_num")
+  title        String         @db.VarChar(256)
   price        Decimal        @db.Decimal(18, 2)
   capacity     Int
-  numbr        Int            @unique(map: "ak_room_numbr")
+  created      DateTime       @default(now()) @db.Timestamp(6)
+  updated      DateTime       @default(now()) @db.Timestamp(6) @updatedAt
   descr        String?
   booking_room booking_room[]
   room_amenity room_amenity[]
@@ -109,10 +111,10 @@ model room_amenity {
 }
 
 model room_status {
-  id          Int      @id(map: "pk_room_status") @default(autoincrement())
-  room_id     Int
-  begin_date  DateTime @db.Timestamp(6)
-  end_date    DateTime @db.Timestamp(6)
-  is_avalible Boolean
-  room        room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_room_room_status")
+  id           Int      @id(map: "pk_room_status") @default(autoincrement())
+  room_id      Int
+  begin_date   DateTime @db.Timestamp(6)
+  end_date     DateTime @db.Timestamp(6)
+  is_available Boolean
+  room         room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_room_room_status")
 }

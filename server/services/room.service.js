@@ -18,29 +18,26 @@ class RoomService {
   }
 
   async getOneRoomByNumber(number) {
-    const roomEntity = await roomRepository.getRoomByNumbr(Number(number));
+    const roomEntity = await roomRepository.getRoomByNum(Number(number));
     const roomStatuses = await roomRepository.getAllRoomStatuses(roomEntity.id);
     const roomDto = new RoomDto(roomEntity);
     return { ...roomDto, statuses: roomStatuses };
   }
 
   async updateRoomByNumber(number, dto) {
-    return await roomRepository.updateRoomByNumbr(
-      Number(number),
-      dto.toEntity(),
-    );
+    return await roomRepository.updateRoomByNum(Number(number), dto.toEntity());
   }
 
   async removeRoomByNumber(number) {
-    return await roomRepository.removeRoomByNumbr(Number(number));
+    return await roomRepository.removeRoomByNum(Number(number));
   }
 
-  async setRoomStatus(id, startDate, endDate, isAvalible) {
+  async setRoomStatus(id, startDate, endDate, isAvailable) {
     const roomStatus = await roomRepository.setRoomStatus(
       Number(id),
       new Date(startDate),
       new Date(endDate),
-      isAvalible ?? false,
+      isAvailable ?? false,
     );
     return roomStatus;
   }

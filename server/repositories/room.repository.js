@@ -18,7 +18,7 @@ class RoomRepository {
   async getAllRooms() {
     const rooms = await prisma.room.findMany({
       orderBy: {
-        numbr: 'asc',
+        num: 'asc',
       },
     });
     return rooms;
@@ -30,23 +30,23 @@ class RoomRepository {
     });
   }
 
-  async getRoomByNumbr(numbr) {
+  async getRoomByNum(num) {
     return await prisma.room.findUnique({
-      where: { numbr },
+      where: { num },
     });
   }
 
-  async updateRoomByNumbr(numbr, fields) {
+  async updateRoomByNum(num, fields) {
     return await prisma.room.upsert({
-      where: { numbr },
+      where: { num },
       update: fields,
       create: fields,
     });
   }
 
-  async removeRoomByNumbr(numbr) {
+  async removeRoomByNum(num) {
     return await prisma.room.delete({
-      where: { numbr },
+      where: { num },
     });
   }
 
@@ -79,13 +79,13 @@ class RoomRepository {
     return roomStatus;
   }
 
-  async setRoomStatus(roomId, startDate, endDate, isAvalible) {
+  async setRoomStatus(roomId, startDate, endDate, isAvailable) {
     return await prisma.room_status.create({
       data: {
         room_id: roomId,
         begin_date: startDate,
         end_date: endDate,
-        is_avalible: isAvalible,
+        is_available: isAvailable,
       },
     });
   }

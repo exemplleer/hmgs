@@ -13,7 +13,7 @@ export default [
     .withMessage('Поле должно быть числом в пределах от 0 до 2147483647')
     .custom(async (value, { req }) => {
       if (req.method === 'POST') {
-        const room = await roomRepository.getRoomByNumbr(value);
+        const room = await roomRepository.getRoomByNum(value);
         if (room) throw new Error('Комната с таким номером уже существует');
       }
       return true;
