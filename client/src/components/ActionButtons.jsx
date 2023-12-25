@@ -11,12 +11,12 @@ const ActionButtons = ({ record }) => (
     style={{ fontSize: '1rem' }}
   >
     <Link to={`${ROOMS_ROUTE}/${record.number}`}>
-      <Tooltip placement="top" title="Больше информации">
+      <Tooltip placement="top" title="Подробнее">
         <InfoCircleTwoTone />
       </Tooltip>
     </Link>
     <Link to={`${ROOMS_ROUTE}/${record.number}/edit`}>
-      <Tooltip placement="top" title="Редактирование информации">
+      <Tooltip placement="top" title="Редактирование">
         <EditTwoTone />
       </Tooltip>
     </Link>

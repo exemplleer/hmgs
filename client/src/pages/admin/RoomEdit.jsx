@@ -19,11 +19,7 @@ const RoomEdit = () => {
       navigate(ROOMS_ROUTE);
       successMessage('Номер успешно обновлен');
     } catch (error) {
-      errorMessage(
-        error,
-        'Ошибка при обновлении номера',
-        error.response.data.errors[0].msg,
-      );
+      errorMessage(error, 'Ошибка при обновлении номера');
     }
   };
 

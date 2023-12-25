@@ -4,16 +4,20 @@ import RoomForm from '../../components/RoomForm';
 import { ROOMS_ROUTE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
 import RoomService from '../../api/RoomService';
-import { successMessage } from '../../utils/messages';
+import { errorMessage, successMessage } from '../../utils/messages';
 
 const RoomCreate = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const onFinishCreate = async (data) => {
-    await RoomService.createRoom(data);
-    navigate(ROOMS_ROUTE);
-    successMessage('Номер создан успешно');
+    try {
+      await RoomService.createRoom(data);
+      navigate(ROOMS_ROUTE);
+      successMessage('Номер создан успешно');
+    } catch (error) {
+      errorMessage(error);
+    }
   };
 
   return (

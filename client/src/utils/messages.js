@@ -10,8 +10,12 @@ export const successMessage = (message, description) => {
 
 export const errorMessage = (error, message, description) => {
   notification.error({
-    message: message || 'Ошибка',
-    description: description || error.message || '',
+    message: message || 'Произошла ошибка',
+    description:
+      description ||
+      error?.response?.data?.errors[0].msg ||
+      error?.message ||
+      '',
     duration: 2.5,
   });
 };

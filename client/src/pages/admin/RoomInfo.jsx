@@ -54,8 +54,10 @@ const RoomInfo = () => {
               <strong>Вместимость: </strong> <span>{room.capacity} чел.</span>
             </p>
             <div>
-              <strong>Описание: </strong>{' '}
-              <p style={{ whiteSpace: 'pre-line' }}>{room.description}</p>
+              <p style={{ whiteSpace: 'pre-line' }}>
+                <strong>Описание: </strong>
+                {room.description}
+              </p>
             </div>
           </Card>
         </Col>
@@ -67,11 +69,11 @@ const RoomInfo = () => {
             columns={[
               {
                 title: 'Статус',
-                dataIndex: 'is_avalible',
-                key: 'is_avalible',
+                dataIndex: 'is_available',
+                key: 'is_available',
                 fixed: 'left',
                 render: (_, record) =>
-                  record.is_availible ? 'Доступен' : 'Не доступен',
+                  record.is_available ? 'Доступен' : 'Не доступен',
               },
               {
                 title: 'Начало',
