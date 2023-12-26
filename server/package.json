@@ -1,12 +1,12 @@
 {
-  "name": "hotel-managment-system-server",
+  "name": "hotel-management-system-server",
   "version": "0.0.0",
   "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env index.js",
-    "dev": "nodemon --env-file=.env index.js"
+    "start": "node --env-file=.env src/index.js",
+    "dev": "nodemon --env-file=.env src/index.js"
   },
   "keywords": [],
   "author": "",
