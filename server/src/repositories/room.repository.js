@@ -1,57 +1,49 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma.js';
 
-const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn'],
-});
-
-prisma.$on('query', (e) => {
-  console.log('Duration query: ' + e.duration + 'ms');
-});
+const roomModel = prisma.room;
+const roomStatusModel = prisma.room_status;
 
 class RoomRepository {
-  async createRoom(fields) {
-    return await prisma.room.create({
-      data: fields,
-    });
+  async createRoom(data) {
+    return await roomModel.create({ data });
   }
 
-  async getAllRooms() {
-    const rooms = await prisma.room.findMany({
+  async getRooms() {
+    return await roomModel.findMany({
       orderBy: {
         num: 'asc',
       },
     });
-    return rooms;
   }
 
   async getRoomById(id) {
-    return await prisma.room.findUnique({
+    return await roomModel.findUnique({
       where: { id },
     });
   }
 
   async getRoomByNum(num) {
-    return await prisma.room.findUnique({
+    return await roomModel.findUnique({
       where: { num },
     });
   }
 
-  async updateRoomByNum(num, fields) {
-    return await prisma.room.upsert({
+  async updateRoomByNum(num, data) {
+    return await roomModel.upsert({
       where: { num },
-      update: fields,
-      create: fields,
+      update: data,
+      create: data,
     });
   }
 
   async removeRoomByNum(num) {
-    return await prisma.room.delete({
+    return await roomModel.delete({
       where: { num },
     });
   }
 
   async getAllRoomStatuses(roomId) {
-    return await prisma.room_status.findMany({
+    return await roomStatusModel.findMany({
       where: {
         room_id: roomId,
       },
@@ -59,7 +51,7 @@ class RoomRepository {
   }
 
   async getRoomStatus(roomId, targetDate) {
-    const roomStatus = await prisma.room_status.findFirst({
+    return roomStatusModel.findFirst({
       where: {
         room_id: roomId,
         AND: [
@@ -76,11 +68,10 @@ class RoomRepository {
         ],
       },
     });
-    return roomStatus;
   }
 
-  async setRoomStatus(roomId, startDate, endDate, isAvailable) {
-    return await prisma.room_status.create({
+  async setRoomStatus(roomId, { startDate, endDate, isAvailable }) {
+    return await roomStatusModel.create({
       data: {
         room_id: roomId,
         begin_date: startDate,

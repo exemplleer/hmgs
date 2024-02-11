@@ -1,76 +1,71 @@
-import RoomDto from '../dtos/room.dto.js';
 import roomService from '../services/room.service.js';
+import ErrorUtils from '../errors/api.error.js';
 
 class RoomController {
   async createRoom(req, res) {
     try {
-      const roomDto = new RoomDto(req.body);
-      const newRoom = await roomService.createRoom(roomDto);
+      const roomData = req.body;
+      const newRoom = await roomService.createRoom(roomData);
+
       res.status(201).json({ result: newRoom });
     } catch (error) {
-      res.status(500).json({ msg: error.message });
+      ErrorUtils.catchError(res, error);
     }
   }
 
   async getRooms(req, res) {
     try {
-      const rooms = await roomService.getAllRooms();
+      const rooms = await roomService.getRooms();
+
       res.status(200).json({ result: rooms });
     } catch (error) {
-      res.status(500).json({ message: error.message });
-      console.error(error);
+      ErrorUtils.catchError(res, error);
     }
   }
 
   async getOneRoom(req, res) {
     try {
-      const number = req.params.number;
-      const room = await roomService.getOneRoomByNumber(number);
+      const num = req.params.number;
+      const room = await roomService.getOneRoomByNum(num);
+
       res.status(200).json({ result: room });
     } catch (error) {
-      res.status(500).json({ message: error.message });
-      console.error(error);
+      ErrorUtils.catchError(res, error);
     }
   }
 
   async updateRoom(req, res) {
     try {
-      const number = req.params.number || req.body.number;
-      const data = req.body;
-      const roomDto = new RoomDto(data);
-      const updatedRoom = await roomService.updateRoomByNumber(number, roomDto);
+      const num = req.params.number;
+      const roomData = req.body;
+      const updatedRoom = await roomService.updateRoomByNum(num, roomData);
+
       res.status(200).json({ result: updatedRoom });
     } catch (error) {
-      res.status(500).json({ message: error.message });
-      console.error(error);
+      ErrorUtils.catchError(res, error);
     }
   }
 
   async removeRoom(req, res) {
     try {
-      const number = req.params.number;
-      const remove = await roomService.removeRoomByNumber(number);
+      const num = req.params.number;
+      const remove = await roomService.removeRoomByNum(num);
+
       res.status(200).json({ result: remove });
     } catch (error) {
-      res.status(500).json({ message: error.message });
-      console.error(error);
+      ErrorUtils.catchError(res, error);
     }
   }
 
   async setRoomStatus(req, res) {
     try {
-      const id = req.params.id;
-      const { startDate, endDate, isAvalible } = req.body;
-      const roomStatus = await roomService.setRoomStatus(
-        id,
-        startDate,
-        endDate,
-        isAvalible,
-      );
+      const { id } = req.params;
+      const roomStatusData = req.body;
+      const roomStatus = await roomService.setRoomStatus(id, roomStatusData);
+
       res.status(200).json({ result: roomStatus });
     } catch (error) {
-      res.status(500).json({ message: error.message });
-      console.error(error);
+      ErrorUtils.catchError(res, error);
     }
   }
 }
