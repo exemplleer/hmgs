@@ -1,5 +1,4 @@
 import { body } from 'express-validator';
-import roomRepository from '../repositories/room.repository.js';
 import validation from './validation.js';
 
 export default [
@@ -10,14 +9,7 @@ export default [
   body('number')
     .toInt()
     .isInt({ min: 0, max: 2147483647 })
-    .withMessage('Поле должно быть числом в пределах от 0 до 2147483647')
-    .custom(async (value, { req }) => {
-      if (req.method === 'POST') {
-        const room = await roomRepository.getRoomByNum(value);
-        if (room) throw new Error('Комната с таким номером уже существует');
-      }
-      return true;
-    }),
+    .withMessage('Поле должно быть числом в пределах от 0 до 2147483647'),
   body('capacity')
     .toInt()
     .isInt({ min: 1, max: 100 })
