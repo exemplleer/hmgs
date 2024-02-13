@@ -5,14 +5,15 @@ import { BadRequest } from '../errors/api.error.js';
 class RoomService {
   async createRoom(roomData) {
     const roomDto = new RoomDto(roomData);
-    const roomExists = await roomRepository.getRoomByNum(roomDto.number);
+    const roomExists = await roomRepository.getRoomByNum(roomDto.num);
 
     if (roomExists) {
       throw new BadRequest('Комната с таким номером уже существует');
     }
 
-    const entity = roomDto.toEntity();
-    return await roomRepository.createRoom(entity);
+    console.log(roomDto);
+
+    return await roomRepository.createRoom(roomDto);
   }
 
   async getRooms() {
@@ -33,23 +34,22 @@ class RoomService {
 
   async updateRoomByNum(num, roomData) {
     const roomDto = new RoomDto(roomData);
-    const entity = roomDto.toEntity();
-    return await roomRepository.updateRoomByNum(Number(num), entity);
+    return await roomRepository.updateRoomByNum(Number(num), roomDto);
   }
 
   async removeRoomByNum(num) {
     return await roomRepository.removeRoomByNum(Number(num));
   }
 
-  async setRoomStatus(id, { startDate, endDate, isAvailable }) {
-    const roomStatus = await roomRepository.setRoomStatus(
-      Number(id),
-      new Date(startDate),
-      new Date(endDate),
-      isAvailable ?? false,
-    );
-    return roomStatus;
-  }
+  // async setRoomStatus(id, { startDate, endDate, isAvailable }) {
+  //   const roomStatus = await roomRepository.setRoomStatus(
+  //     Number(id),
+  //     new Date(startDate),
+  //     new Date(endDate),
+  //     isAvailable ?? false,
+  //   );
+  //   return roomStatus;
+  // }
 }
 
 export default new RoomService();

@@ -45,7 +45,7 @@ const RoomsControl = () => {
         </Button>
       </Space>
       <RoomsTable
-        data={rooms.map((room) => ({ ...room, key: room.number }))}
+        data={rooms.map((room) => ({ ...room, key: room.num }))}
         isLoading={isLoading}
       ></RoomsTable>
     </Space>

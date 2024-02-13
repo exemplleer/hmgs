@@ -20,11 +20,11 @@ export const privateRoutes = [
     Component: RoomCreate,
   },
   {
-    path: `${ROOMS_ROUTE}/:number`,
+    path: `${ROOMS_ROUTE}/:num`,
     Component: RoomInfo,
   },
   {
-    path: `${ROOMS_ROUTE}/:number/edit`,
+    path: `${ROOMS_ROUTE}/:num/edit`,
     Component: RoomEdit,
   },
   {

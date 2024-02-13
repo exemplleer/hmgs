@@ -6,7 +6,7 @@ export default [
     .trim()
     .isLength({ min: 3, max: 255 })
     .withMessage('Поле должно содержать от 3 до 255 символов'),
-  body('number')
+  body('num')
     .toInt()
     .isInt({ min: 0, max: 2147483647 })
     .withMessage('Поле должно быть числом в пределах от 0 до 2147483647'),

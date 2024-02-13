@@ -25,7 +25,7 @@ class RoomController {
 
   async getOneRoom(req, res) {
     try {
-      const num = req.params.number;
+      const num = req.params.num;
       const room = await roomService.getOneRoomByNum(num);
 
       res.status(200).json({ result: room });
@@ -36,7 +36,7 @@ class RoomController {
 
   async updateRoom(req, res) {
     try {
-      const num = req.params.number;
+      const num = req.params.num;
       const roomData = req.body;
       const updatedRoom = await roomService.updateRoomByNum(num, roomData);
 
@@ -48,7 +48,7 @@ class RoomController {
 
   async removeRoom(req, res) {
     try {
-      const num = req.params.number;
+      const num = req.params.num;
       const remove = await roomService.removeRoomByNum(num);
 
       res.status(200).json({ result: remove });

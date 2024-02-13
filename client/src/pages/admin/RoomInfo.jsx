@@ -8,11 +8,11 @@ import { errorMessage } from '../../utils/messages';
 const RoomInfo = () => {
   const [room, setRoom] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const { number } = useParams();
+  const { num } = useParams();
 
-  const fetchRoom = async (number) => {
+  const fetchRoom = async (num) => {
     try {
-      const response = await RoomService.getOneRoom(number);
+      const response = await RoomService.getOneRoom(num);
       const room = response.result;
       const statuses = room.statuses.map((status, index) => ({
         ...status,
@@ -28,8 +28,8 @@ const RoomInfo = () => {
   };
 
   useEffect(() => {
-    fetchRoom(number);
-  }, [number]);
+    fetchRoom(num);
+  }, [num]);
 
   return (
     <Space direction="vertical" size="large">
@@ -42,7 +42,7 @@ const RoomInfo = () => {
             loading={isLoading}
           >
             <p>
-              <strong>Номер: </strong> <span>{room.number}</span>
+              <strong>Номер: </strong> <span>{room.num}</span>
             </p>
             <p>
               <strong>Название: </strong> <span>{room.title}</span>

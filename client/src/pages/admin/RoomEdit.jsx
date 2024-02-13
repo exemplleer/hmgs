@@ -9,13 +9,13 @@ import { errorMessage, successMessage } from '../../utils/messages';
 
 const RoomEdit = () => {
   const [form] = Form.useForm();
-  const { number } = useParams();
+  const { num } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  const submitHandler = async (number, data) => {
+  const submitHandler = async (num, data) => {
     try {
-      await RoomService.updateRoom(number, data);
+      await RoomService.updateRoom(num, data);
       navigate(ROOMS_ROUTE);
       successMessage('Номер успешно обновлен');
     } catch (error) {
@@ -23,23 +23,23 @@ const RoomEdit = () => {
     }
   };
 
-  const removeHandler = async (number) => {
+  const removeHandler = async (num) => {
     try {
-      await RoomService.removeRoom(number).then(() => navigate(ROOMS_ROUTE));
+      await RoomService.removeRoom(num).then(() => navigate(ROOMS_ROUTE));
       successMessage('Номер был успешно удален');
     } catch (error) {
       errorMessage(error, 'Ошибка при удалении номера');
     }
   };
 
-  const fillForm = async (form, number) => {
+  const fillForm = async (form, num) => {
     try {
-      const response = await RoomService.getOneRoom(number);
+      const response = await RoomService.getOneRoom(num);
       const room = response.result;
 
       form.setFieldsValue({
         title: room.title,
-        number: room.number,
+        num: room.num,
         price: Number(room.price),
         capacity: Number(room.capacity),
         description: room.description,
@@ -52,8 +52,8 @@ const RoomEdit = () => {
   };
 
   useEffect(() => {
-    fillForm(form, number);
-  }, [number]);
+    fillForm(form, num);
+  }, [num]);
 
   return (
     <Space size="middle" direction="vertical" style={{ width: '100%' }}>
@@ -62,12 +62,12 @@ const RoomEdit = () => {
       <RoomForm
         form={form}
         isLoading={isLoading}
-        submitHandler={() => submitHandler(number, form.getFieldsValue())}
+        submitHandler={() => submitHandler(num, form.getFieldsValue())}
         customButtons={
           <>
             <Button
               onClick={() => {
-                fillForm(form, number);
+                fillForm(form, num);
                 setIsLoading(true);
               }}
             >
@@ -76,7 +76,7 @@ const RoomEdit = () => {
             <Popconfirm
               title="Удалить этот номер?"
               description="Это действие необратимо! Вы уверены, что хотите удалить этот номер?"
-              onConfirm={() => removeHandler(number)}
+              onConfirm={() => removeHandler(num)}
               okText="Да"
               cancelText="Нет"
             >

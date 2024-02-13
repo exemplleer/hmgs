@@ -32,7 +32,7 @@ const RoomForm = ({
     >
       <Form.Item
         label="Номер"
-        name="number"
+        name="num"
         validateTrigger="onBlur"
         hasFeedback
         required

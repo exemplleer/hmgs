@@ -4,8 +4,8 @@ import ActionButtons from './ActionButtons';
 const columns = [
   {
     title: 'Номер',
-    dataIndex: 'number',
-    key: 'number',
+    dataIndex: 'num',
+    key: 'num',
     width: '15%',
   },
   {

@@ -1,7 +1,7 @@
 import prisma from '../prisma.js';
 
 const roomModel = prisma.room;
-const roomStatusModel = prisma.room_status;
+const roomStatusModel = prisma.roomStatus;
 
 class RoomRepository {
   async createRoom(data) {
@@ -45,7 +45,7 @@ class RoomRepository {
   async getAllRoomStatuses(roomId) {
     return await roomStatusModel.findMany({
       where: {
-        room_id: roomId,
+        roomId,
       },
     });
   }
@@ -53,15 +53,15 @@ class RoomRepository {
   async getRoomStatus(roomId, targetDate) {
     return roomStatusModel.findFirst({
       where: {
-        room_id: roomId,
+        roomId,
         AND: [
           {
-            begin_date: {
+            startDate: {
               lte: targetDate,
             },
           },
           {
-            end_date: {
+            endDate: {
               gte: targetDate,
             },
           },
@@ -70,16 +70,16 @@ class RoomRepository {
     });
   }
 
-  async setRoomStatus(roomId, { startDate, endDate, isAvailable }) {
-    return await roomStatusModel.create({
-      data: {
-        room_id: roomId,
-        begin_date: startDate,
-        end_date: endDate,
-        is_available: isAvailable,
-      },
-    });
-  }
+  // async setRoomStatus(roomId, { startDate, endDate, isAvailable }) {
+  //   return await roomStatusModel.create({
+  //     data: {
+  //       room_id: roomId,
+  //       begin_date: startDate,
+  //       end_date: endDate,
+  //       is_available: isAvailable,
+  //     },
+  //   });
+  // }
 }
 
 export default new RoomRepository();

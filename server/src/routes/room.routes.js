@@ -6,9 +6,9 @@ const router = new Router();
 
 router.post('/rooms', roomValidation, RoomController.createRoom);
 router.get('/rooms', RoomController.getRooms);
-router.get('/rooms/:number', RoomController.getOneRoom);
-router.put('/rooms/:number', roomValidation, RoomController.updateRoom);
-router.delete('/rooms/:number', RoomController.removeRoom);
-router.post('/rooms/:number/status', RoomController.setRoomStatus);
+router.get('/rooms/:num', RoomController.getOneRoom);
+router.put('/rooms/:num', roomValidation, RoomController.updateRoom);
+router.delete('/rooms/:num', RoomController.removeRoom);
+router.post('/rooms/:num/status', RoomController.setRoomStatus);
 
 export default router;
