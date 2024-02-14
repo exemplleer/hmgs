@@ -1,5 +1,5 @@
 import express from 'express';
-import roomRouter from './routes/room.routes.js';
+import roomRouter from './routes/room.routes';
 import cors from 'cors';
 import morgan from 'morgan';
 

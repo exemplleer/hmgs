@@ -1,8 +1,9 @@
-import roomService from '../services/room.service.js';
-import ErrorUtils from '../errors/api.error.js';
+import roomService from '../services/room.service';
+import ErrorUtils from '../errors/api.error';
+import { Request, Response } from 'express';
 
 class RoomController {
-  async createRoom(req, res) {
+  async createRoom(req: Request, res: Response) {
     try {
       const roomData = req.body;
       const newRoom = await roomService.createRoom(roomData);
@@ -13,7 +14,7 @@ class RoomController {
     }
   }
 
-  async getRooms(req, res) {
+  async getRooms(req: Request, res: Response) {
     try {
       const rooms = await roomService.getRooms();
 
@@ -23,9 +24,9 @@ class RoomController {
     }
   }
 
-  async getOneRoom(req, res) {
+  async getOneRoom(req: Request, res: Response) {
     try {
-      const num = req.params.num;
+      const num: number = Number(req.params.num);
       const room = await roomService.getOneRoomByNum(num);
 
       res.status(200).json({ result: room });
@@ -34,9 +35,9 @@ class RoomController {
     }
   }
 
-  async updateRoom(req, res) {
+  async updateRoom(req: Request, res: Response) {
     try {
-      const num = req.params.num;
+      const num: number = Number(req.params.num);
       const roomData = req.body;
       const updatedRoom = await roomService.updateRoomByNum(num, roomData);
 
@@ -46,9 +47,9 @@ class RoomController {
     }
   }
 
-  async removeRoom(req, res) {
+  async removeRoom(req: Request, res: Response) {
     try {
-      const num = req.params.num;
+      const num: number = Number(req.params.num);
       const remove = await roomService.removeRoomByNum(num);
 
       res.status(200).json({ result: remove });
@@ -57,17 +58,17 @@ class RoomController {
     }
   }
 
-  async setRoomStatus(req, res) {
-    try {
-      const { id } = req.params;
-      const roomStatusData = req.body;
-      const roomStatus = await roomService.setRoomStatus(id, roomStatusData);
+  // async setRoomStatus(req, res) {
+  //   try {
+  //     const { id } = req.params;
+  //     const roomStatusData = req.body;
+  //     const roomStatus = await roomService.setRoomStatus(id, roomStatusData);
 
-      res.status(200).json({ result: roomStatus });
-    } catch (error) {
-      ErrorUtils.catchError(res, error);
-    }
-  }
+  //     res.status(200).json({ result: roomStatus });
+  //   } catch (error) {
+  //     ErrorUtils.catchError(res, error);
+  //   }
+  // }
 }
 
 export default new RoomController();

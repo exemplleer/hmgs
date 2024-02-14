@@ -1,56 +1,43 @@
-import prisma from '../prisma.js';
+import { Prisma } from '@prisma/client';
+import prisma from '../prisma';
 
 const roomModel = prisma.room;
 const roomStatusModel = prisma.roomStatus;
 
 class RoomRepository {
-  async createRoom(data) {
+  async createRoom(data: Prisma.roomCreateInput) {
     return await roomModel.create({ data });
   }
 
   async getRooms() {
-    return await roomModel.findMany({
-      orderBy: {
-        num: 'asc',
-      },
-    });
+    return await roomModel.findMany({ orderBy: { num: 'asc' } });
   }
 
-  async getRoomById(id) {
-    return await roomModel.findUnique({
-      where: { id },
-    });
+  async getRoomById(id: number) {
+    return await roomModel.findUnique({ where: { id } });
   }
 
-  async getRoomByNum(num) {
-    return await roomModel.findUnique({
-      where: { num },
-    });
+  async getRoomByNum(num: number) {
+    return await roomModel.findUnique({ where: { num } });
   }
 
-  async updateRoomByNum(num, data) {
+  async updateRoomByNum(num: number, data: Prisma.roomCreateInput) {
     return await roomModel.upsert({
       where: { num },
-      update: data,
       create: data,
+      update: data,
     });
   }
 
-  async removeRoomByNum(num) {
-    return await roomModel.delete({
-      where: { num },
-    });
+  async removeRoomByNum(num: number) {
+    return await roomModel.delete({ where: { num } });
   }
 
-  async getAllRoomStatuses(roomId) {
-    return await roomStatusModel.findMany({
-      where: {
-        roomId,
-      },
-    });
+  async getAllRoomStatuses(roomId: number) {
+    return await roomStatusModel.findMany({ where: { roomId } });
   }
 
-  async getRoomStatus(roomId, targetDate) {
+  async getRoomStatus(roomId: number, targetDate: Date) {
     return roomStatusModel.findFirst({
       where: {
         roomId,
