@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { ZodError } from 'zod';
 
 class ApiError extends Error {
   status: number;
@@ -47,11 +48,16 @@ export class BadRequest extends ApiError {
 
 class ErrorUtils {
   static catchError(res: Response, error: any) {
-    console.error('💥', error);
+    if (error instanceof ZodError) {
+      return res.status(400).json({ ...error.issues[0] });
+    }
 
     if (error instanceof ApiError) {
+      console.log(error);
       return res.status(error.status).json({ message: error.message });
     }
+
+    console.error('💥', error);
     return res.status(500).json({ message: error.message });
   }
 }
