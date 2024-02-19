@@ -1,58 +1,53 @@
-import roomService from '../services/room.service';
+import RoomService from '../services/room.service';
 import ErrorUtils from '../errors/api.error';
 import { Request, Response } from 'express';
 import { roomCreateSchema } from '../validations/room.validation';
 
-class RoomController {
-  async createRoom(req: Request, res: Response) {
+export default class RoomController {
+  static async createRoom(req: Request, res: Response) {
     try {
       const roomData = roomCreateSchema.parse(req.body);
-      const newRoom = await roomService.createRoom(roomData);
-
+      const newRoom = await RoomService.createRoom(roomData);
       res.status(201).json({ result: newRoom });
     } catch (error) {
       ErrorUtils.catchError(res, error);
     }
   }
 
-  async getRooms(req: Request, res: Response) {
+  static async getRooms(req: Request, res: Response) {
     try {
-      const rooms = await roomService.getRooms();
-
+      const rooms = await RoomService.getRooms();
       res.status(200).json({ result: rooms });
     } catch (error) {
       ErrorUtils.catchError(res, error);
     }
   }
 
-  async getOneRoom(req: Request, res: Response) {
+  static async getOneRoom(req: Request, res: Response) {
     try {
       const num = Number(req.params.num);
-      const room = await roomService.getOneRoomByNum(num);
-
+      const room = await RoomService.getOneRoomByNum(num);
       res.status(200).json({ result: room });
     } catch (error) {
       ErrorUtils.catchError(res, error);
     }
   }
 
-  async updateRoom(req: Request, res: Response) {
+  static async updateRoom(req: Request, res: Response) {
     try {
       const num = Number(req.params.num);
       const roomData = roomCreateSchema.parse(req.body);
-      const updatedRoom = await roomService.updateRoomByNum(num, roomData);
-
+      const updatedRoom = await RoomService.updateRoomByNum(num, roomData);
       res.status(200).json({ result: updatedRoom });
     } catch (error) {
       ErrorUtils.catchError(res, error);
     }
   }
 
-  async removeRoom(req: Request, res: Response) {
+  static async removeRoom(req: Request, res: Response) {
     try {
       const num = Number(req.params.num);
-      const remove = await roomService.removeRoomByNum(num);
-
+      const remove = await RoomService.removeRoomByNum(num);
       res.status(200).json({ result: remove });
     } catch (error) {
       ErrorUtils.catchError(res, error);
@@ -71,5 +66,3 @@ class RoomController {
   //   }
   // }
 }
-
-export default new RoomController();
