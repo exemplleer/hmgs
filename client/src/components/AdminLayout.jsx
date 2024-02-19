@@ -1,6 +1,6 @@
+import { Outlet } from 'react-router-dom';
 import { Layout, theme } from 'antd';
-import AppHeader from './AppHeader';
-import AdminContent from './AdminContent';
+import AdminHeader from './AdminHeader';
 const { Content } = Layout;
 
 const AdminLayout = () => {
@@ -10,7 +10,7 @@ const AdminLayout = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <AppHeader />
+      <AdminHeader />
       <Content style={{ padding: '16px 48px' }}>
         <div
           style={{
@@ -20,7 +20,7 @@ const AdminLayout = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          <AdminContent />
+          <Outlet />
         </div>
       </Content>
     </Layout>
