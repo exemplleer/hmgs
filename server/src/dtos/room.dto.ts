@@ -1,17 +1,11 @@
-export interface IRoom {
-  num: number;
-  title: string;
-  price: number;
-  capacity: number;
-  description: string;
-}
+import { IRoomDto } from '../types/room.types';
 
-export default class RoomDto implements IRoom {
-  num: number;
-  title: string;
-  price: number;
-  capacity: number;
-  description: string;
+export default class RoomDto implements IRoomDto {
+  num;
+  title;
+  price;
+  capacity;
+  description;
 
   constructor(model: any) {
     this.num = model.num;

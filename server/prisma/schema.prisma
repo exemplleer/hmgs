@@ -77,13 +77,23 @@ model payment {
 }
 
 model person {
-  id        Int       @id(map: "pkPerson") @default(autoincrement())
-  phone     String    @unique(map: "akPersonPhone") @db.VarChar(16)
-  email     String?   @db.VarChar(256)
-  firstName String    @db.VarChar(256)
-  lastName  String    @db.VarChar(256)
-  role      String    @db.VarChar(64)
-  booking   booking[]
+  id            Int              @id(map: "pkPerson") @default(autoincrement())
+  phone         String?          @unique(map: "akPersonPhone") @db.VarChar(16)
+  email         String           @unique @db.VarChar(128)
+  password      String           @db.VarChar(128)
+  firstName     String           @db.VarChar(256)
+  lastName      String           @db.VarChar(256)
+  role          String           @db.VarChar(64)
+  booking       booking[]
+  refreshSesson refreshSession[]
+}
+
+model refreshSession {
+  id           Int     @id(map: "pkRefreshSession") @default(autoincrement())
+  personId     Int
+  refreshToken String  @db.VarChar(512)
+  fingerprint  String? @db.VarChar(32)
+  person       person  @relation(fields: [personId], references: [id], onDelete: Cascade)
 }
 
 model room {
