@@ -1,5 +1,6 @@
-import { Prisma } from '@prisma/client';
 import prisma from '../prisma';
+import { Prisma } from '@prisma/client';
+import { IRoomsGetOptions } from '../types/room.types';
 
 const roomModel = prisma.room;
 const roomStatusModel = prisma.roomStatus;
@@ -9,8 +10,26 @@ export default class RoomRepository {
     return await roomModel.create({ data });
   }
 
-  static async getRooms() {
-    return await roomModel.findMany({ orderBy: { num: 'asc' } });
+  static async getRooms(options: IRoomsGetOptions) {
+    const pagination = options.pagination;
+    const sort = options.sort;
+    const filter = options.filter;
+
+    return await roomModel.findMany({
+      take: pagination.limit,
+      skip: pagination.offset,
+      orderBy: { [sort.by]: sort.order },
+      where: {
+        AND: [
+          {
+            title: { contains: filter.title },
+          },
+          {
+            num: { equals: filter.num },
+          },
+        ],
+      },
+    });
   }
 
   static async getRoomById(id: number) {

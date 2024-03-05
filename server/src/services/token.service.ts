@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Forbidden, Unauthorized } from '../errors/api.error';
 import { AuthRequest } from '../types/express.types';
 import { NextFunction } from 'express';

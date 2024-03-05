@@ -1,7 +1,7 @@
 import RoomService from '../services/room.service';
 import ErrorUtils from '../errors/api.error';
 import { Request, Response } from 'express';
-import { roomCreateSchema } from '../validations/room.validation';
+import { roomCreateSchema, roomsGetQueryParamsSchema } from '../validations/room.validation';
 
 export default class RoomController {
   static async createRoom(req: Request, res: Response) {
@@ -16,7 +16,8 @@ export default class RoomController {
 
   static async getRooms(req: Request, res: Response) {
     try {
-      const rooms = await RoomService.getRooms();
+      const queryParams = roomsGetQueryParamsSchema.parse(req.query);
+      const rooms = await RoomService.getRooms(queryParams);
       res.status(200).json({ result: rooms });
     } catch (error) {
       ErrorUtils.catchError(res, error);

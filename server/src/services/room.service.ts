@@ -2,6 +2,7 @@ import RoomRepository from '../repositories/room.repository';
 import RoomDto from '../dtos/room.dto';
 import { BadRequest } from '../errors/api.error';
 import { room as RoomEntity } from '@prisma/client';
+import { IRoomsGetOptions, IRoomsGetQueryParams } from './../types/room.types';
 
 export default class RoomService {
   static async createRoom(roomData: any) {
@@ -15,8 +16,24 @@ export default class RoomService {
     return await RoomRepository.createRoom(roomDto);
   }
 
-  static async getRooms() {
-    const rooms = await RoomRepository.getRooms();
+  static async getRooms(queryParams: IRoomsGetQueryParams) {
+    const limit = queryParams.limit || 10;
+    const page = queryParams.page || 1;
+    const offset = limit * (page - 1);
+
+    const options = {
+      pagination: { limit, page, offset },
+      sort: {
+        by: queryParams.sortBy ?? 'num',
+        order: queryParams.order ?? 'asc',
+      },
+      filter: {
+        title: queryParams.title,
+        num: queryParams.num,
+      },
+    } as IRoomsGetOptions;
+
+    const rooms = await RoomRepository.getRooms(options);
     return rooms.map((room) => new RoomDto(room));
   }
 
